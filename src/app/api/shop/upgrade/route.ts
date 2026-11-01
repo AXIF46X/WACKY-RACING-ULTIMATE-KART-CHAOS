@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { players } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { VEHICLES, UPGRADES, MAX_UPGRADE_LEVEL, upgradeCost, type UpgradeKey } from "@/game/data";
@@ -11,6 +11,7 @@ const VALID_KEYS = UPGRADES.map((u) => u.key) as string[];
 // Buys exactly ONE level. Cost + level cap are computed server-side.
 export async function POST(req: Request) {
   try {
+    const db = getDb();
     const body = await req.json().catch(() => ({}));
     const { playerId, token } = body ?? {};
     const vehicleId = String(body?.vehicleId ?? "");

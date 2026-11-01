@@ -229,7 +229,10 @@ Any Node host running Next.js works (Vercel, Railway, a VM…). Required env:
 DATABASE_URL=postgres://user:pass@host:5432/dbname
 ```
 
-Run `npx drizzle-kit push` once against the database, then `npm run build && npm start`.
+Configure `DATABASE_URL` in the host's runtime environment (and in Vercel's project
+environment variables for each deployment environment). The app can build without it,
+but database-backed API routes require it at runtime. Run `npx drizzle-kit push` once
+against the database, then `npm run build && npm start`.
 
 ---
 

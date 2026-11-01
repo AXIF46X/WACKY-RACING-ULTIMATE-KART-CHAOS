@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { players, STARTER_UNLOCKS, STARTER_STATS } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
@@ -15,6 +15,7 @@ function sanitizeName(raw: unknown): string {
 // POST: create-or-load a racer profile by name. Returns profile + secret token.
 export async function POST(req: Request) {
   try {
+    const db = getDb();
     const body = await req.json().catch(() => ({}));
     const name = sanitizeName(body?.name);
     const existing = await db.select().from(players).where(eq(players.name, name)).limit(1);

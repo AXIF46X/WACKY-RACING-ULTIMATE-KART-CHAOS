@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { bestLaps, players } from "@/db/schema";
 import { desc, asc } from "drizzle-orm";
 
@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
 // GET ?top=players       -> top 20 racers by XP
 export async function GET(req: Request) {
   try {
+    const db = getDb();
     const url = new URL(req.url);
     if (url.searchParams.get("top") === "players") {
       const rows = await db

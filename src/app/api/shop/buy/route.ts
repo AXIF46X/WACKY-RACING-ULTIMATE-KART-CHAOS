@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { players, type Unlocks } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { VEHICLES, CHARACTERS, HATS, WHEELS, HORNS, DANCES, BUNDLES, GEM_EXCHANGE } from "@/game/data";
@@ -45,6 +45,7 @@ function catalogPrice(kind: Kind, id: string): { coins: number; gems?: number } 
 //      { playerId, token, gemPack: "<id>" }
 export async function POST(req: Request) {
   try {
+    const db = getDb();
     const body = await req.json().catch(() => ({}));
     const { playerId, token } = body ?? {};
     if (typeof playerId !== "string" || typeof token !== "string")

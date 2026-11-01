@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { players, raceResults, bestLaps } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
@@ -14,6 +14,7 @@ const MIN_LAP_MS = 9000; // absolute floor: faster laps are rejected (anti-cheat
 // POST: submit a finished race. Server computes ALL rewards — never trusts client xp/coins.
 export async function POST(req: Request) {
   try {
+    const db = getDb();
     const body = await req.json().catch(() => ({}));
     const { playerId, token } = body ?? {};
     const trackId = String(body?.trackId ?? "");

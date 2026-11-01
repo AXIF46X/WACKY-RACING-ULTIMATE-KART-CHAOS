@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { players, type PlayerStats, type Unlocks } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
@@ -38,6 +38,7 @@ function uniqValid(kind: keyof typeof KNOWN, arr: unknown): string[] {
 // POST { playerId, token, unlocks } -> validates purchases against wallet server-side.
 export async function POST(req: Request) {
   try {
+    const db = getDb();
     const body = await req.json().catch(() => ({}));
     const { playerId, token } = body ?? {};
     if (typeof playerId !== "string" || typeof token !== "string")
